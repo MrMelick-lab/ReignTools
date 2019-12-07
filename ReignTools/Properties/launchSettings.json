@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "ReignTools": {
+      "commandName": "Project",
+      "commandLineArgs": "roll -n 11"
+    }
+  }
+}
