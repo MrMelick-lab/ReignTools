@@ -2,7 +2,7 @@
   "profiles": {
     "ReignTools": {
       "commandName": "Project",
-      "commandLineArgs": "roll -n 11"
+      "commandLineArgs": "roll -n 10"
     }
   }
 }

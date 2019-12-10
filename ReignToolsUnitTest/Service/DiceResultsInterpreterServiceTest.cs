@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Xunit;
-using AutoFixture;
 using FluentAssertions;
 using ReignTools.Service;
 using ReignTools.Entities.Business;
@@ -11,7 +8,7 @@ namespace ReignToolsUnitTest.Service
 {
     public class DiceResultsInterpreterServiceTest
     {
-        private DiceResultsInterpreterService sut;
+        private readonly DiceResultsInterpreterService sut;
 
         public DiceResultsInterpreterServiceTest()
         {

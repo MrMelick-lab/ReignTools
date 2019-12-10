@@ -1,19 +1,18 @@
-﻿using ConsoleTableExt;
-using ReignTools.Entities.Options;
+﻿using ReignTools.Entities.Options;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ReignTools.Service
 {
     public class DiceRollerService : IDiceRollerService
     {
-        private IDiceResultsInterpreterService diceResultsInterpreterService;
+        private readonly IDiceResultsInterpreterService diceResultsInterpreterService;
+        private readonly IDiceResultUIService diceResultUIService;
 
-        public DiceRollerService(IDiceResultsInterpreterService diceResultsInterpreterService)
+        public DiceRollerService(IDiceResultsInterpreterService diceResultsInterpreterService, IDiceResultUIService diceResultUIService)
         {
             this.diceResultsInterpreterService = diceResultsInterpreterService;
+            this.diceResultUIService = diceResultUIService;
         }
 
         public int Roll(RollOptions rollOptions)
@@ -23,20 +22,26 @@ namespace ReignTools.Service
                 return -1;
             }
 
-            var diceResults = new List<short>();
-            var random = new Random();
+            var diceResults = RollPoolOfDice(rollOptions.NumberOfDice);
 
-            for (int i = 0; i < rollOptions.NumberOfDice; i++)
+            var results = diceResultsInterpreterService.GetSetsFromDiceRolls(diceResults);
+
+            diceResultUIService.ShowResults(results);
+
+            return 0;
+        }
+
+        private static List<short> RollPoolOfDice(short numberOfDice)
+        {
+            var random = new Random();
+            var diceResults = new List<short>();
+
+            for (int i = 0; i < numberOfDice; i++)
             {
                 diceResults.Add((short)random.Next(2, 10));
             }
 
-            var results = diceResultsInterpreterService.GetSetsFromDiceRolls(diceResults);
-
-            ConsoleTableBuilder.From(results)
-                                .WithFormat(ConsoleTableBuilderFormat.MarkDown)
-                                .ExportAndWriteLine();
-            return 0;
+            return diceResults;
         }
     }
 }
