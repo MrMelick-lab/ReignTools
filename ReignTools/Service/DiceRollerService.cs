@@ -22,7 +22,21 @@ namespace ReignTools.Service
                 return -1;
             }
 
-            var diceResults = RollPoolOfDice(rollOptions.NumberOfDice);
+            List<short> diceResults = new List<short>();
+            bool specialDice = rollOptions.ExpertDice > 0;
+
+            if (rollOptions.ExpertDice > 0)
+            {
+                diceResults.Add(rollOptions.ExpertDice);
+
+            }
+
+            if (rollOptions.NumberOfDice == 10 && specialDice)
+            {
+                rollOptions.NumberOfDice -= 1;
+            }
+
+            diceResults.AddRange(RollPoolOfDice(rollOptions.NumberOfDice));
 
             var results = diceResultsInterpreterService.GetSetsFromDiceRolls(diceResults);
 

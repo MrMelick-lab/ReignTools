@@ -64,6 +64,7 @@ namespace ReignToolsUnitTest.Service
             return _fixture
                 .Build<RollOptions>()
                 .With(o => o.NumberOfDice, numberOfDice)
+                .Without(o => o.MasterDice)
                 .Create();
         }
     }
