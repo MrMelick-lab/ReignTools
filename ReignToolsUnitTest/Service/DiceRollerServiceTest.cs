@@ -59,11 +59,26 @@ namespace ReignToolsUnitTest.Service
             mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<Sets>>()), Times.Never);
         }
 
-        private RollOptions CreateRollOptions(short numberOfDice)
+        [Theory]
+        [InlineData(2,1)]
+        [InlineData(10,1)]
+        public void When_rolling_dice_with_expert_dice_and_number_of_dice_is_valid_then_return_must_include_expert_dice(short numberOfDice, short expertDice)
+        {
+            var rollOptions = CreateRollOptions(numberOfDice, expertDice);
+
+            var result = sut.Roll(rollOptions);
+
+            result.Should().Be(0);
+            mockDiceResultsInterpreterService.Verify(x => x.GetSetsFromDiceRolls(It.Is<List<short>>(x => x.Contains(expertDice))), Times.Once);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<Sets>>()), Times.Once);
+        }
+
+        private RollOptions CreateRollOptions(short numberOfDice, short expertDice = 0)
         {
             return _fixture
                 .Build<RollOptions>()
                 .With(o => o.NumberOfDice, numberOfDice)
+                .With(o => o.ExpertDice, expertDice)
                 .Without(o => o.MasterDice)
                 .Create();
         }

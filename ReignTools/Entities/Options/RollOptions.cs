@@ -13,8 +13,8 @@ namespace ReignTools.Entities.Options
         public short ExpertDice { get; set; }
 
         [Option('m', "masterDice", HelpText = "Master dice wich will be added after the roll")]
-        public short MasterDice { get; set; }
+        public bool MasterDice { get; set; }
 
-        public bool IsValid() => NumberOfDice >= 2 && NumberOfDice <= 10 && !(ExpertDice > 0 & MasterDice > 0);
+        public bool IsValid() => NumberOfDice >= 2 && NumberOfDice <= 10 && !(ExpertDice > 0 & MasterDice);
     }
 }
