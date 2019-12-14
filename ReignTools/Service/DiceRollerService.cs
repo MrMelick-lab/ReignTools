@@ -1,7 +1,6 @@
 ﻿using ReignTools.Entities.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ReignTools.Service
 {
@@ -9,11 +8,14 @@ namespace ReignTools.Service
     {
         private readonly IDiceResultsInterpreterService diceResultsInterpreterService;
         private readonly IDiceResultUIService diceResultUIService;
+        private readonly IConsoleReaderService consoleReaderService;
+        private static readonly Random getrandom = new Random();
 
-        public DiceRollerService(IDiceResultsInterpreterService diceResultsInterpreterService, IDiceResultUIService diceResultUIService)
+        public DiceRollerService(IDiceResultsInterpreterService diceResultsInterpreterService, IDiceResultUIService diceResultUIService, IConsoleReaderService consoleReaderService)
         {
             this.diceResultsInterpreterService = diceResultsInterpreterService;
             this.diceResultUIService = diceResultUIService;
+            this.consoleReaderService = consoleReaderService;
         }
 
         public int Roll(RollOptions rollOptions)
@@ -26,7 +28,7 @@ namespace ReignTools.Service
             List<short> diceResults = new List<short>();
             bool specialDice = rollOptions.ExpertDice > 0 || rollOptions.MasterDice;
 
-            if (rollOptions.NumberOfDice == 10 && specialDice)
+            if (specialDice)
             {
                 rollOptions.NumberOfDice -= 1;
             }
@@ -34,7 +36,6 @@ namespace ReignTools.Service
             if (rollOptions.ExpertDice > 0)
             {
                 diceResults.Add(rollOptions.ExpertDice);
-
             }
 
             diceResults.AddRange(RollPoolOfDice(rollOptions.NumberOfDice));
@@ -42,8 +43,8 @@ namespace ReignTools.Service
             if (rollOptions.MasterDice)
             {
                 diceResultUIService.ShowResults(diceResults);
-                var masterDice = Convert.ToInt16(Console.ReadLine());
-                if(masterDice < 2 || masterDice > 10)
+                var masterDice = consoleReaderService.ReadLine();
+                if (masterDice == -1)
                 {
                     return -1;
                 }
@@ -59,15 +60,22 @@ namespace ReignTools.Service
 
         private static List<short> RollPoolOfDice(short numberOfDice)
         {
-            var random = new Random();
             var diceResults = new List<short>();
 
             for (int i = 0; i < numberOfDice; i++)
             {
-                diceResults.Add((short)random.Next(2, 10));
+                diceResults.Add(GetRandomNumber(2, 11));
             }
 
             return diceResults;
+        }
+
+        private static short GetRandomNumber(int min, int max)
+        {
+            lock (getrandom) // synchronize
+            {
+                return (short)getrandom.Next(min, max);
+            }
         }
     }
 }

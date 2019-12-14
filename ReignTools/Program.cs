@@ -19,6 +19,7 @@ namespace ReignTools
                 .AddSingleton<IDiceRollerService, DiceRollerService>()
                 .AddScoped<IDiceResultsInterpreterService, DiceResultsInterpreterService>()
                 .AddScoped<IDiceResultUIService, DiceResultUIService>()
+                .AddScoped<IConsoleReaderService, ConsoleReaderService>()
                 .BuildServiceProvider();
 
             Console.WriteAscii("REIGN");

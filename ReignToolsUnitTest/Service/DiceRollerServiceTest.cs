@@ -17,6 +17,7 @@ namespace ReignToolsUnitTest.Service
         private readonly DiceRollerService sut;
         private readonly Mock<IDiceResultsInterpreterService> mockDiceResultsInterpreterService;
         private readonly Mock<IDiceResultUIService> mockDiceResultUIService;
+        private readonly Mock<IConsoleReaderService> mockConsoleReaderService;
 
         public DiceRollerServiceTest()
         {
@@ -24,6 +25,7 @@ namespace ReignToolsUnitTest.Service
             _fixture.Customize(new AutoMoqCustomization { ConfigureMembers = true });
             mockDiceResultsInterpreterService = _fixture.Freeze<Mock<IDiceResultsInterpreterService>>();
             mockDiceResultUIService = _fixture.Freeze<Mock<IDiceResultUIService>>();
+            mockConsoleReaderService = _fixture.Freeze<Mock<IConsoleReaderService>>();
             sut = _fixture.Create<DiceRollerService>();
         }
 
@@ -71,6 +73,34 @@ namespace ReignToolsUnitTest.Service
             result.Should().Be(0);
             mockDiceResultsInterpreterService.Verify(x => x.GetSetsFromDiceRolls(It.Is<List<short>>(x => x.Contains(expertDice))), Times.Once);
             mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<Sets>>()), Times.Once);
+        }
+
+        [Fact]
+        public void When_rolling_dice_with_master_and_number_of_dice_is_valid_then_return_must_include_expert_dice()
+        {
+            var rollOptions = new RollOptions { NumberOfDice = 2, MasterDice = true };
+            mockConsoleReaderService.Setup(x => x.ReadLine()).Returns(1);
+
+            var result = sut.Roll(rollOptions);
+
+            result.Should().Be(0);
+            mockDiceResultsInterpreterService.Verify(x => x.GetSetsFromDiceRolls(It.Is<List<short>>(x => x.Contains(1))), Times.Once);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<Sets>>()), Times.Once);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<short>>()), Times.Once);
+        }
+
+        [Fact]
+        public void When_rolling_dice_with_invalider_master_dice_then_return_error()
+        {
+            var rollOptions = new RollOptions { NumberOfDice = 10, MasterDice = true };
+            mockConsoleReaderService.Setup(x => x.ReadLine()).Returns(-1);
+
+            var result = sut.Roll(rollOptions);
+
+            result.Should().Be(-1);
+            mockDiceResultsInterpreterService.Verify(x => x.GetSetsFromDiceRolls(It.Is<List<short>>(x => x.Contains(1))), Times.Never);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<Sets>>()), Times.Never);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<short>>()), Times.Once);
         }
 
         private RollOptions CreateRollOptions(short numberOfDice, short expertDice = 0)
