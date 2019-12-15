@@ -29,8 +29,9 @@ namespace ReignTools
 
             var diceRoller = serviceProvider.GetService<IDiceRollerService>();
 
-            return Parser.Default.ParseArguments<RollOptions>(args).MapResult(
+            return Parser.Default.ParseArguments<RollOptions, UnworthyRollOptions>(args).MapResult(
                 (RollOptions opts) => diceRoller.Roll(opts),
+                (UnworthyRollOptions opts) => diceRoller.Roll(opts),
                 errs => 1);
         }
     }

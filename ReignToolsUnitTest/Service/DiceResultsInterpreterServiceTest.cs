@@ -88,7 +88,6 @@ namespace ReignToolsUnitTest.Service
                     Height = 2
                 },
 
-
                 new Sets
                 {
                     Width = 2,
@@ -128,6 +127,114 @@ namespace ReignToolsUnitTest.Service
             var results = sut.GetSetsFromDiceRolls(new List<short> { 10, 10, 10, 10, 10, 10, 10, 10, 10, 10 });
 
             results.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void When_5_dices_with_one_set_of_2x1_then_one_sets()
+        {
+            var expected = new List<Sets>
+            {
+                new Sets
+                {
+                    Width = 2,
+                    Height = 1
+                }
+            };
+
+            var results = sut.GetSetsFromUnworthyDiceRolls(new List<short> { 1, 2, 3, 4, 1 });
+
+            results.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void When_15_dices_with_one_set_of_4x1__and_one_set_of_3x2_then_two_sets_of_2x1_and_one_set_of_2x2()
+        {
+            var expected = new List<Sets>
+            {
+                new Sets
+                {
+                    Width = 2,
+                    Height = 1
+                },
+
+                new Sets
+                {
+                    Width = 2,
+                    Height = 1
+                },
+
+                new Sets
+                {
+                    Width = 2,
+                    Height = 2
+                }
+            };
+
+            var results = sut.GetSetsFromUnworthyDiceRolls(new List<short> { 1, 2, 3, 4, 1, 1, 7, 2, 9, 10, 1, 2, 8, 6, 5 });
+
+            results.Should().BeEquivalentTo(expected);
+        }
+
+        [Fact]
+        public void When_15_dices_with_one_set_of_8x1__and_one_set_of_7x2_then_two_sets_of_2x1_and_four_set_of_2x1_and_three_set_of_2x2()
+        {
+            var expected = new List<Sets>
+            {
+               new Sets
+               {
+                   Width = 2,
+                   Height = 1
+               },
+
+               new Sets
+               {
+                   Width = 2,
+                   Height = 1
+               },
+
+               new Sets
+               {
+                   Width = 2,
+                   Height = 1
+               },
+
+               new Sets
+               {
+                   Width = 2,
+                   Height = 1
+               },
+
+               new Sets
+               {
+                   Width = 2,
+                   Height = 2
+               },
+
+               new Sets
+               {
+                   Width = 2,
+                   Height = 2
+               },
+
+               new Sets
+               {
+                   Width = 2,
+                   Height = 2
+               },
+            };
+
+            var results = sut.GetSetsFromUnworthyDiceRolls(new List<short> { 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2});
+
+            results.Should().BeEquivalentTo(expected);
+        }
+
+
+        [Fact]
+        public void When_4_dices_with_no_set_then_no_set()
+        {
+            var results = sut.GetSetsFromUnworthyDiceRolls(new List<short> { 1, 2, 3, 4 });
+
+            results.Should().BeEmpty();
         }
     }
 }

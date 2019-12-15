@@ -103,6 +103,38 @@ namespace ReignToolsUnitTest.Service
             mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<short>>()), Times.Once);
         }
 
+        [Theory]
+        [InlineData(1)]
+        [InlineData(16)]
+        public void When__unworthy_rolling_dice_and_number_of_dice_is_not_valid_then_return_before_doing_anything(short numberOfDice)
+        {
+            var rollOptions = new UnworthyRollOptions { NumberOfDice = numberOfDice };
+
+            var result = sut.Roll(rollOptions);
+
+            result.Should().Be(-1);
+            mockDiceResultsInterpreterService.Verify(x => x.GetSetsFromUnworthyDiceRolls(It.IsAny<List<short>>()), Times.Never);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.IsAny<List<Sets>>()), Times.Never);
+        }
+
+        [Theory]
+        [InlineData(2)]
+        [InlineData(7)]
+        [InlineData(15)]
+        public void When_unworthy_rolling_dice_and_number_of_dice_is_valid_then_roll_the_exacter_number_of_dice_in_options(short numberOfDice)
+        {
+            var rollOptions = new UnworthyRollOptions { NumberOfDice = numberOfDice };
+
+            var listOfSets = _fixture.CreateMany<Sets>(numberOfDice / 2).ToList();
+            mockDiceResultsInterpreterService.Setup(x => x.GetSetsFromUnworthyDiceRolls(It.IsAny<List<short>>())).Returns(listOfSets);
+
+            var result = sut.Roll(rollOptions);
+
+            result.Should().Be(0);
+            mockDiceResultsInterpreterService.Verify(x => x.GetSetsFromUnworthyDiceRolls(It.Is<List<short>>(l => l.Count == numberOfDice)), Times.Once);
+            mockDiceResultUIService.Verify(x => x.ShowResults(It.Is<List<Sets>>(l => l.Equals(listOfSets))), Times.Once);
+        }
+
         private RollOptions CreateRollOptions(short numberOfDice, short expertDice = 0)
         {
             return _fixture

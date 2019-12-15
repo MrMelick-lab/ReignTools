@@ -1,6 +1,7 @@
 ﻿using ReignTools.Entities.Options;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace ReignTools.Service
 {
@@ -25,7 +26,7 @@ namespace ReignTools.Service
                 return -1;
             }
 
-            List<short> diceResults = new List<short>();
+            var diceResults = new List<short>();
             bool specialDice = rollOptions.ExpertDice > 0 || rollOptions.MasterDice;
 
             if (specialDice)
@@ -58,6 +59,22 @@ namespace ReignTools.Service
             return 0;
         }
 
+        public int Roll(UnworthyRollOptions rollOptions)
+        {
+            if (!rollOptions.IsValid())
+            {
+                return -1;
+            }
+
+            var diceResults = RollPoolOfDice(rollOptions.NumberOfDice);
+
+            var interpretedDiceResult = diceResultsInterpreterService.GetSetsFromUnworthyDiceRolls(diceResults);
+
+            diceResultUIService.ShowResults(interpretedDiceResult);
+
+            return 0;
+        }
+
         private static List<short> RollPoolOfDice(short numberOfDice)
         {
             var diceResults = new List<short>();
@@ -65,6 +82,7 @@ namespace ReignTools.Service
             for (int i = 0; i < numberOfDice; i++)
             {
                 diceResults.Add(GetRandomNumber(2, 11));
+                Thread.Sleep(50);
             }
 
             return diceResults;

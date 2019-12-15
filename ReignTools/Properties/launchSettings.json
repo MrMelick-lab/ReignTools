@@ -2,7 +2,7 @@
   "profiles": {
     "ReignTools": {
       "commandName": "Project",
-      "commandLineArgs": "roll -n 10 -m"
+      "commandLineArgs": "unworthyroll -n 15"
     }
   }
 }
