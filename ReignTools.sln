@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReignTools", "ReignTools\ReignTools.csproj", "{E8C8D400-3E1A-4EFF-A660-A8C184A44F1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReignTools", "ReignTools\ReignTools.csproj", "{E8C8D400-3E1A-4EFF-A660-A8C184A44F1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReignToolsUnitTest", "ReignToolsUnitTest\ReignToolsUnitTest.csproj", "{11CFAD21-75DE-482C-B376-E1989D5976A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReignToolsUnitTest", "ReignToolsUnitTest\ReignToolsUnitTest.csproj", "{11CFAD21-75DE-482C-B376-E1989D5976A2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReignToolsWeb", "ReignToolsWeb\ReignToolsWeb.csproj", "{B4E4EFB3-9C9D-49CE-9142-D18218C33970}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{11CFAD21-75DE-482C-B376-E1989D5976A2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11CFAD21-75DE-482C-B376-E1989D5976A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11CFAD21-75DE-482C-B376-E1989D5976A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B4E4EFB3-9C9D-49CE-9142-D18218C33970}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B4E4EFB3-9C9D-49CE-9142-D18218C33970}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B4E4EFB3-9C9D-49CE-9142-D18218C33970}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B4E4EFB3-9C9D-49CE-9142-D18218C33970}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

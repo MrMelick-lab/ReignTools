@@ -1,0 +1,45 @@
+﻿@page "/fetchdata"
+
+@using ReignToolsWeb.Data
+@using ReignTools.Entities.Options
+@using ReignTools.Entities.Business
+@using ReignTools.Service
+@inject DiceRollerService RollerService
+@inject DiceResultsInterpreterService InterpreterService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+
+@if (results == null || !results.Any())
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Results</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in results)
+            {
+                <tr>
+                    <td>@result.ToString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
+@code {
+    private List<Sets> results = new List<Sets>();
+
+    protected override async Task OnInitializedAsync()
+    {
+       results = InterpreterService.GetSetsFromDiceRolls(RollerService.RollPoolOfDice(10));
+    }
+}

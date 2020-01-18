@@ -75,7 +75,7 @@ namespace ReignTools.Service
             return 0;
         }
 
-        private static List<short> RollPoolOfDice(short numberOfDice)
+        public List<short> RollPoolOfDice(short numberOfDice)
         {
             var diceResults = new List<short>();
 
