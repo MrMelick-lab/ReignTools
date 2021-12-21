@@ -10,7 +10,7 @@ namespace ReignTools.Service
         private readonly IDiceResultsInterpreterService diceResultsInterpreterService;
         private readonly IDiceResultUIService diceResultUIService;
         private readonly IConsoleReaderService consoleReaderService;
-        private static readonly Random getrandom = new Random();
+        private static readonly Random getrandom = new();
 
         public DiceRollerService(IDiceResultsInterpreterService diceResultsInterpreterService, IDiceResultUIService diceResultUIService, IConsoleReaderService consoleReaderService)
         {
